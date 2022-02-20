@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Research() {
+function Doctor() {
     return (
         <div>
-
+            
         </div>
     );
 }
 
-export default Research;
+export default Doctor;

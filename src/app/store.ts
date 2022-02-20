@@ -1,9 +1,17 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { rootReducer } from './../features/rootReducer';
+import { configureStore, ThunkAction, Action} from '@reduxjs/toolkit';
+import { loadState, saveState } from './stateLs';
+
+const persistedStore = loadState();
 
 export const store = configureStore({
-  reducer: {
-    
-  },
+  preloadedState: persistedStore,
+  reducer: rootReducer,
+  devTools: true,
+});
+
+store.subscribe(() => {
+  saveState(store.getState());
 });
 
 export type AppDispatch = typeof store.dispatch;
@@ -14,3 +22,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+

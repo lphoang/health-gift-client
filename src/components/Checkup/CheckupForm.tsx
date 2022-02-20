@@ -8,7 +8,7 @@ function CheckupForm() {
             <div className="sm:flex sm:items-start w-full">
                 <div className="mt-3 text-center sm:mt-0 sm:text-left w-full mx-5">
                     <Dialog.Title as="h2" className="text-center text-xl uppercase leading-6 font-medium text-gray-900">
-                        Đăng ký khám và tư vấn tại Medic
+                        Đăng ký khám và tư vấn tại Health Gift
                     </Dialog.Title>
                     <Dialog.Description as="p" className="text-center text-sm leading-6 font-medium text-gray-500">
                         Vui lòng để lại thông tin và nhu cầu của quý khách. Chúng tôi sẽ liên hệ trong thời gian sớm nhất

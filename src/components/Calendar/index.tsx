@@ -13,10 +13,10 @@ function Calendar() {
     useEffect(() => {
         document.title = "Lịch hẹn"
     })
-
+        
     return (
         <div>
-            <ScheduleComponent>
+            <ScheduleComponent height="80vh" width="100vw" currentView="Month" selectedDate={new Date()}>
                 <Inject services={[Day, Week, Month, Agenda]} />
             </ScheduleComponent>
         </div>

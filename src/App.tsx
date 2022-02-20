@@ -4,8 +4,10 @@ import Footer from './components/Global/Footer';
 //Import modules
 import Header from "./components/Global/Header"
 import Home from './components/Home';
-import Research from './components/Research';
 import Calendar from './components/Calendar';
+import UserProfile from './components/User/UserProfile';
+import Diseases from 'components/Diseases';
+import Doctors from 'components/Doctors';
 
 function App() {
   return (
@@ -14,10 +16,12 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/diseases" element={<Research />} />
+          <Route path="/user" element={<UserProfile />} />
+          <Route path="/diseases" element={<Diseases />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/doctors" element={<Doctors />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </Router>
     </div>
   )
