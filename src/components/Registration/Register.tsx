@@ -2,9 +2,10 @@ import { Dialog } from '@headlessui/react'
 import { LockClosedIcon } from '@heroicons/react/solid'
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import ApiState from 'components/Global/ApiState';
-import { authRegister, selectApiState } from 'features/slices/authSlice';
+import { authRegister, emptyError, selectApiState } from 'features/slices/authSlice';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom"
+import { Role } from 'utils/types';
 
 function Register() {
     const apiState = useAppSelector(selectApiState);
@@ -14,12 +15,14 @@ function Register() {
         lastName: '',
         email: '',
         password: '',
+        appRole: Role[Role.USER]
     })
     const navigate = useNavigate();
 
     useEffect(() => {
         document.title = `Health Gift | Đăng ký`
-    });
+        emptyError(dispatch);
+    }, []);
 
     useEffect(() => {
         apiState.isSuccess && navigate('/');
@@ -102,6 +105,35 @@ function Register() {
                                                 ...user, lastName: e.target.value
                                             })
                                         } />
+                                </div>
+                            </div>
+                            <div className="md:flex md:items-center mb-6">
+                                <div className="md:w-1/3">
+                                    <label className="block text-gray-500 font-bold md:text-left md:mb-0 pr-4" htmlFor="role">
+                                        Bạn là?
+                                    </label>
+                                </div>
+                                <div className="md:w-2/3 relative inline-flex self-center">
+                                    <svg className="text-white bg-purple-700 absolute top-0 right-0 m-2 pointer-events-none p-2 rounded" xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 38 22" version="1.1">
+                                        <title>F09B337F-81F6-41AC-8924-EC55BA135736</title>
+                                        <g id="ZahnhelferDE—Design" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                                            <g id="ZahnhelferDE–Icon&amp;Asset-Download" transform="translate(-539.000000, -199.000000)" fill="#ffffff" fillRule="nonzero">
+                                                <g id="Icon-/-ArrowRight-Copy-2" transform="translate(538.000000, 183.521208)">
+                                                    <polygon id="Path-Copy" transform="translate(20.000000, 18.384776) rotate(135.000000) translate(-20.000000, -18.384776) " points="33 5.38477631 33 31.3847763 29 31.3847763 28.999 9.38379168 7 9.38477631 7 5.38477631" />
+                                                </g>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                    <select className="text-md font-bold rounded border-2 border-indigo-700 text-gray-600 h-14 w-60 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
+                                        value={user.appRole}
+                                        onChange={
+                                            (e) => setUser({
+                                                ...user, appRole: e.target.value
+                                            })
+                                        }>
+                                        <option value={Role[Role.USER]}>Bệnh nhân</option>
+                                        <option value={Role[Role.DOCTOR]}>Bác sĩ</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

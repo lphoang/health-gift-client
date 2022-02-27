@@ -25,6 +25,7 @@ export function getLoading(): IApiState {
 export function getInitialUserInfo(): IUser {
     return {
         age: 0,
+        avatar: "",
         role: "",
         email: "",
         enabled: false,
@@ -45,7 +46,7 @@ export function getInitialDiseaseInfo(): IDisease {
         symptom: '',
         routesOfTransmission: '',
         objects: '',
-        precautious: '',
+        precautions: '',
         diagnosis: '',
         treatmentMeasures: ''
     }
@@ -53,6 +54,7 @@ export function getInitialDiseaseInfo(): IDisease {
 
 export function getInitialBlogInfo(): IBlog {
     return {
+        id: '',
         title: '',
         body: '',
         imageUrl: [],
@@ -152,7 +154,7 @@ export function getError(apiState: IApiState, errorMessage: string): IApiState {
 export function getErrorMsg(error: any) {
     let errMsg = '';
     if (error) {
-        errMsg = error.response.data.message;
+        errMsg = error.response?.data.message;
     } else {
         errMsg = `Something wrong happened! ${error.message}`;
     }

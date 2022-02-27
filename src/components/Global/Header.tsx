@@ -1,5 +1,4 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { Link } from 'react-router-dom'
 import {
@@ -7,8 +6,19 @@ import {
     XIcon,
 } from '@heroicons/react/outline'
 import Modal from '../Registration/Modal'
+import { useAppSelector, useAppDispatch } from 'app/hooks'
+import { selectIsLogged } from 'features/slices/authSlice'
+import LoggedIn from './LoggedIn'
 
 export default function Header() {
+    const isLogged = useAppSelector(selectIsLogged);
+    const user = useAppSelector(state => state.auth?.user)
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+
+    }, [])
+
     const [onShowModal, setOnShowModal] = useState<boolean>(false);
     const modalProps = {
         open: onShowModal,
@@ -72,7 +82,7 @@ export default function Header() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
             >
-                <Popover.Panel focus className="absolute top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
+                <Popover.Panel focus className="absolute z-50 top-0 inset-x-0 p-2 transition transform origin-top-right md:hidden">
                     <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white divide-y-2 divide-gray-50">
                         <div className="pt-5 pb-6 px-5">
                             <div className="flex items-center justify-between">
@@ -104,18 +114,26 @@ export default function Header() {
                                 </Link>
                             </div>
                             <div>
-                                <button
-                                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                                    onClick={handleShowModal}
-                                >
-                                    Đăng ký
-                                </button>
-                                <p className="mt-6 text-center text-base font-medium text-gray-500">
-                                    Đã có tài khoản?{' '}
-                                    <button className="text-indigo-600 hover:text-indigo-500" onClick={handleShowModal}>
-                                        Đăng nhập
-                                    </button>
-                                </p>
+                                {!isLogged ? (
+                                    <>
+                                        <button
+                                            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                                            onClick={handleShowModal}
+                                        >
+                                            Đăng ký
+                                        </button>
+                                        <p className="mt-6 text-center text-base font-medium text-gray-500">
+                                            Đã có tài khoản?{' '}
+                                            <button className="text-indigo-600 hover:text-indigo-500" onClick={handleShowModal}>
+                                                Đăng nhập
+                                            </button>
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <LoggedIn user={user}/>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

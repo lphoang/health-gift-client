@@ -8,6 +8,7 @@ import Calendar from './components/Calendar';
 import UserProfile from './components/User/UserProfile';
 import Diseases from 'components/Diseases';
 import Doctors from 'components/Doctors';
+import Blog from 'components/Blog';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<UserProfile />} />
+          <Route path="/blogs/:id" element={<Blog />} />
           <Route path="/diseases" element={<Diseases />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/doctors" element={<Doctors />} />

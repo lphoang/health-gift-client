@@ -23,6 +23,7 @@ export interface RegisterRequest {
     lastName: string,
     email: string,
     password: string,
+    appRole: string
 }
 
 export interface LoginRequest {
@@ -32,6 +33,7 @@ export interface LoginRequest {
 
 export interface IUser {
     age: number,
+    avatar: string,
     role: string,
     email: string,
     enabled: boolean,
@@ -50,12 +52,13 @@ export interface IDisease {
     symptom: string,
     routesOfTransmission: string,
     objects: string,
-    precautious: string,
+    precautions: string,
     diagnosis: string,
     treatmentMeasures: string
 }
 
 export interface IBlog {
+    id: string,
     title: string,
     body: string,
     imageUrl: string[],
@@ -72,6 +75,10 @@ export enum AppointmentStatus {
 
 export enum CertificateCheckStatus {
     NOT_VERIFIED, VERIFIED
+}
+
+export enum Role {
+    DOCTOR, USER
 }
 
 export interface IAppointment {
