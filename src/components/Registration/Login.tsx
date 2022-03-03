@@ -1,30 +1,23 @@
-import { Dialog } from '@headlessui/react'
-import { LockClosedIcon } from '@heroicons/react/solid'
+import { LockClosedIcon } from '@heroicons/react/outline'
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import ApiState from 'components/Global/ApiState';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { authLogin, selectApiState, selectIsLogged } from 'features/slices/authSlice';
+import { authLogin, emptyError, selectApiState } from 'features/slices/authSlice';
 
 function Login() {
     const apiState = useAppSelector(selectApiState);
-    const isLogged = useAppSelector(selectIsLogged);
     const dispatch = useAppDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = `Health Gift | Đăng nhập`
-    });
-
-    useEffect(() => {
-        isLogged && navigate('/')
-    }, [navigate, isLogged])
+        emptyError(dispatch);
+    }, []);
 
     function handleSubmit(e: any) {
         e.preventDefault();
-        console.log("Trying to login", { email, password });
         dispatch(authLogin({ email, password }));
     }
 
@@ -32,9 +25,11 @@ function Login() {
         <div className="bg-white px-3 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start w-full">
                 <div className="mt-3 text-center sm:mt-0 sm:text-left w-full mx-5">
-                    <Dialog.Title as="h3" className="text-center text-lg leading-6 font-medium text-gray-900">
-                        Đăng nhập
-                    </Dialog.Title>
+                    <div>
+                        <h3 className="text-center text-lg leading-6 font-medium text-gray-900">
+                            Đăng nhập
+                        </h3>
+                    </div>
                     <form className="mt-8 space-y-6 w-full" onSubmit={handleSubmit}>
                         <input type="hidden" name="remember" defaultValue="true" />
                         <div className="rounded-md shadow-sm -space-y-px">

@@ -1,4 +1,4 @@
-import { IAppointment, IAppointmentRequest } from './../../utils/types/common';
+import { IAppointmentRequest, IAppointmentResponse } from './../../utils/types/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     getError,
@@ -6,16 +6,16 @@ import {
     getSuccess,
     getLoading,
     getInitialApi,
-    getInitialAppointmentInfo,
+    getInitialAppointmentResponseInfo,
 } from '../../apis/initialInformation'
 import api from 'apis/commonActions';
 
-const initialAppointments: IAppointment[] = [];
+const initialAppointments: IAppointmentResponse[] = [];
 
 const initialState = {
     apiState: getInitialApi(),
     appointments: initialAppointments,
-    appointment: getInitialAppointmentInfo()
+    appointment: getInitialAppointmentResponseInfo()
 }
 
 const appointmentSlice = createSlice({
@@ -33,12 +33,15 @@ const appointmentSlice = createSlice({
         },
         error: (state, action: PayloadAction<string>) => {
             state.apiState = getError(state.apiState, action.payload);
+        },
+        emptyError: (state) => {
+            state.apiState = getInitialApi();
         }
     }
 })
 
 export const getAllAppointmentsByPatientId = (id: string, token: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().appointments().getByPatientId(id, token);
         dispatch(actions.appointmentsDone(response.data));
@@ -48,7 +51,7 @@ export const getAllAppointmentsByPatientId = (id: string, token: string) => asyn
 }
 
 export const getAllAppointmentsByDoctorId = (id: string, token: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().appointments().getByDoctorId(id, token);
         dispatch(actions.appointmentsDone(response.data));
@@ -58,7 +61,7 @@ export const getAllAppointmentsByDoctorId = (id: string, token: string) => async
 }
 
 export const create = (request: IAppointmentRequest, token: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().appointments().create(request, token);
         dispatch(actions.appointmentDone(response.data));
@@ -68,7 +71,7 @@ export const create = (request: IAppointmentRequest, token: string) => async (di
 }
 
 export const update = (request: IAppointmentRequest, token: string, id: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().appointments().update(request, token, id);
         dispatch(actions.appointmentDone(response.data));
@@ -77,13 +80,22 @@ export const update = (request: IAppointmentRequest, token: string, id: string) 
     }
 }
 
+export const updateStatus = (status: string, token: string, id: string) => async (dispatch: any) => {
+    await api().appointments().updateStatus(status, token, id);
+
+}
+
 export const cancel = (token: string, id: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         await api().appointments().cancel(token, id);
     } catch (error) {
         dispatch(actions.error(getErrorMsg(error)));
     }
+}
+
+export const emptyError = (dispatch: any) => {
+    dispatch(actions.emptyError())
 }
 
 export const actions = appointmentSlice.actions;

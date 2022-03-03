@@ -42,11 +42,18 @@ export interface IUser {
     lastName: string,
     locked: boolean,
     password: string,
-    username: string
+    username: string,
+    address: string,
+    birthDate: any,
+    city: string,
+    phoneNumber: string,
+    createdAt: any,
 }
 
 export interface IDisease {
+    id: string,
     name: string,
+    imageUrl: string[],
     overview: string,
     cause: string,
     symptom: string,
@@ -54,7 +61,8 @@ export interface IDisease {
     objects: string,
     precautions: string,
     diagnosis: string,
-    treatmentMeasures: string
+    treatmentMeasures: string,
+    createdAt: any,
 }
 
 export interface IBlog {
@@ -62,11 +70,12 @@ export interface IBlog {
     title: string,
     body: string,
     imageUrl: string[],
-    createdAt: Date
+    createdAt: any
 }
 
 export enum AppointmentType {
-    ONLINE, OFFLINE
+    ONLINE,
+    OFFLINE
 }
 
 export enum AppointmentStatus {
@@ -78,29 +87,42 @@ export enum CertificateCheckStatus {
 }
 
 export enum Role {
-    DOCTOR, USER
+    DOCTOR, PATIENT
 }
 
 export interface IAppointment {
-    appointmentId: string,
+    id: string,
     title: string
     appointmentType: AppointmentType,
+    appointmentDate: any,
     status: AppointmentStatus,
     description: string,
-    startTime: Date,
-    endTime: Date,
-    createdAt: Date,
-    lastModifiedAt: Date,
+    timeSlot: ITimeSlot, 
+    createdAt: any,
+    lastModifiedAt: any,
 }
 
-export interface IAppointmentRequest{
+export interface IAppointmentRequest {
     title: string,
     description: string,
-    appoitnmentType: AppointmentType,
-    startTime: Date,
-    endTime: Date,
+    appointmentType: string,
+    timeSlotId: string,
+    appointmentDate: any,
     patientId: string,
     doctorId: string
+}
+
+export interface IHospital {
+    id: string,
+    hospitalName: string,
+    doctors: IDoctor[],
+    since: any,
+    imageUrl: string[],
+    address: string,
+    contactPhoneNumber: string,
+    description: string,
+    specialities: ISpeciality[],
+    createdAt: any
 }
 
 export interface ICertificate {
@@ -109,8 +131,9 @@ export interface ICertificate {
     awardedBy: string,
     description: string,
     imageUrl: string,
-    issuedOn: Date,
-    status: CertificateCheckStatus
+    issuedOn: any,
+    status: CertificateCheckStatus,
+    createdAt: any
 }
 
 export interface ICertificateRequest {
@@ -118,52 +141,59 @@ export interface ICertificateRequest {
     certificateName: string,
     description: string,
     imageUrl: string,
-    issuedOn: Date
+    issuedOn: any
 }
 
-export interface ISpecialist {
-    specialistId: string,
-    specialistName: string
+export interface ISpeciality {
+    id: string,
+    name: string,
+    createdAt: any,
 }
 
 export interface IReview {
     id: string,
+    patient: IPatient;
     reviewRating: number,
     reviewComment: string,
-    createdAt: Date
+    createdAt: any
 }
 
 export interface IDoctor {
     id: string,
-    doctorId: string,
-    email: string,
-    firstName: string,
-    lastName: string,
+    appUser: IUser,
+    hospital: IHospital,
+    workFrom: any,
+    workTo: any,
     reviewRating: number,
     appointments: IAppointment[],
     certificates: ICertificate[],
-    specialists: ISpecialist[],
+    specialities: ISpeciality[],
+    timeSlots: ITimeSlot[],
     reviews: IReview[]
+}
+
+export interface ITimeSlot {
+    id: string,
+    startTime: any,
+    endTime: any,
 }
 
 export interface IPatient {
     id: string,
-    patientId: string,
-    email: string,
-    firstName: string,
-    lastName: string,
-    address: string,
-    birthDate: Date,
-    city: string,
-    phoneNumber: string,
-    zipCode: string,
+    appUser: IUser,
     appointments: IAppointment[]
 }
 
-export interface IUpdatePatientRequest {
-    address: string,
-    phoneNumber: string,
-    birthDate: Date,
-    city: string,
-    zipCode: string
+export interface IRegisterResponse {
+    verifyToken: string,
+    verifyTokenUrl: string,
+    appUser: IUser
 }
+
+export interface IAppointmentResponse {
+    appointment: IAppointment,
+    location: string,
+    doctorId: string,
+    patientId: string
+}
+

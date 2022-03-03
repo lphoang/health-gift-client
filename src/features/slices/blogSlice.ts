@@ -37,7 +37,7 @@ const blogSlice = createSlice({
 })
 
 export const getAllBlogs = () => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().blogs().getAllBlogs();
         dispatch(actions.blogsDone(response.data));
@@ -47,7 +47,7 @@ export const getAllBlogs = () => async (dispatch: any) => {
 }
 
 export const getBlog = (id: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().blogs().getBlog(id);
         dispatch(actions.blogDone(response.data));
@@ -55,6 +55,36 @@ export const getBlog = (id: string) => async (dispatch: any) => {
         dispatch(actions.error(getErrorMsg(error)));
     }
 }
+
+export const createBlog = (request: any, token: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().blogs().create(request, token);
+        dispatch(actions.blogDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const updateBlog = (request: any, token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().blogs().update(request, token, id);
+        dispatch(actions.blogDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const deleteBlog = (token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().blogs().delete(token, id);
+        dispatch(actions.blogDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
 
 export const actions = blogSlice.actions;
 

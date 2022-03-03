@@ -4,7 +4,12 @@ import patientReducer from 'features/slices/patientSlice'
 import appointmentReducer from 'features/slices/appointmentSlice'
 import blogReducer from 'features/slices/blogSlice'
 import diseaseReducer from 'features/slices/diseaseSlice'
-import specialistReducer from 'features/slices/specialistSlice'
+import specialityReducer from 'features/slices/specialitySlice'
+import hospitalReducer from 'features/slices/hospitalSlice'
+import certificateReducer from 'features/slices/certificateSlice'
+import bucketReducer from './slices/bucketSlice'
+import timeslotReducer from './slices/timeslotSlice'
+import userReducer from './slices/userSlice'
 import { combineReducers } from '@reduxjs/toolkit'
 
 export const rootReducer = combineReducers({
@@ -14,5 +19,10 @@ export const rootReducer = combineReducers({
     appointments: appointmentReducer,
     blogs: blogReducer,
     diseases: diseaseReducer,
-    specialists: specialistReducer
+    specialities: specialityReducer,
+    hospitals: hospitalReducer,
+    timeslots: timeslotReducer,
+    certificates: certificateReducer,
+    buckets: bucketReducer,
+    user: userReducer
 })

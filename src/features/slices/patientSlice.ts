@@ -1,4 +1,4 @@
-import { IApiState, IUpdatePatientRequest } from 'utils/types';
+import { IApiState } from 'utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     getError,
@@ -12,7 +12,7 @@ import api from 'apis/commonActions';
 
 const initialState = {
     apiState: getInitialApi(),
-    patient: getInitialPatientInfo,
+    patient: getInitialPatientInfo(),
 }
 
 const patientSlice = createSlice({
@@ -31,7 +31,7 @@ const patientSlice = createSlice({
 })
 
 export const getPatientInfo = (id: string, token: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().patient().getPatientInfo(id, token);
         dispatch(actions.patientDone(response.data));
@@ -40,21 +40,11 @@ export const getPatientInfo = (id: string, token: string) => async (dispatch: an
     }
 }
 
-export const updatePatientInfo = (id: string, token: string, request: IUpdatePatientRequest) => async (dispatch: any) => {
-    dispatch(actions.loading);
-    try {
-        const response = await api().patient().updatePatientInfo(id, token, request);
-        dispatch(actions.patientDone(response.data));
-    } catch (error) {
-        dispatch(actions.error(getErrorMsg(error)));
-    }
-}
 
-
-export const reviewDoctor = (id: string, token: string, reviewRating: number, reviewComment: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+export const reviewDoctor = (id: string, patientId: string, token: string, reviewRating: number, reviewComment: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
     try {
-        const response = await api().patient().reviewDoctor(id, token, reviewRating, reviewComment);
+        const response = await api().patient().reviewDoctor(id, patientId, token, reviewRating, reviewComment);
         dispatch(actions.patientDone(response.data));
     } catch (error) {
         dispatch(actions.error(getErrorMsg(error)));

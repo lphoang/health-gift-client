@@ -1,3 +1,4 @@
+import { ITimeSlot, IRegisterResponse, IAppointmentResponse } from './../utils/types/common';
 import {
     AppointmentStatus,
     AppointmentType,
@@ -7,10 +8,11 @@ import {
     IDisease,
     IDoctor,
     IUser,
-    ISpecialist,
+    ISpeciality,
     ICertificate,
     CertificateCheckStatus,
-    IPatient
+    IPatient,
+    IHospital
 } from "utils/types";
 
 export function getLoading(): IApiState {
@@ -34,13 +36,20 @@ export function getInitialUserInfo(): IUser {
         lastName: "",
         locked: false,
         password: "",
-        username: ""
+        username: "",
+        birthDate: "",
+        phoneNumber: "",
+        city: "",
+        address: "",
+        createdAt: ""
     }
 }
 
 export function getInitialDiseaseInfo(): IDisease {
     return {
+        id: '',
         name: '',
+        imageUrl: [],
         overview: '',
         cause: '',
         symptom: '',
@@ -48,7 +57,8 @@ export function getInitialDiseaseInfo(): IDisease {
         objects: '',
         precautions: '',
         diagnosis: '',
-        treatmentMeasures: ''
+        treatmentMeasures: '',
+        createdAt: ""
     }
 }
 
@@ -58,43 +68,85 @@ export function getInitialBlogInfo(): IBlog {
         title: '',
         body: '',
         imageUrl: [],
-        createdAt: new Date(),
+        createdAt: "",
     }
 }
+
+export function getInitialHospitalInfo(): IHospital{
+    return {
+      id: "",
+      hospitalName: "",
+      doctors: [],
+      since: "",
+      imageUrl: [],
+      address: "",
+      description: "",
+      contactPhoneNumber: "",
+      specialities: [],
+      createdAt: ""
+    }
+  }
 
 export function getInitialAppointmentInfo(): IAppointment {
     return {
-        appointmentId: '',
+        id: '',
         title: '',
         appointmentType: AppointmentType.OFFLINE,
+        appointmentDate: "",
         status: AppointmentStatus.INCOMING,
         description: '',
-        startTime: new Date(),
-        endTime: new Date(),
-        createdAt: new Date(),
-        lastModifiedAt: new Date()
+        timeSlot: getInitialTimeSlotInfo(),
+        createdAt: "",
+        lastModifiedAt: ""
     }
 }
 
-export function getInitialSpecialistInfo(): ISpecialist {
+export function getInitialAppointmentResponseInfo() : IAppointmentResponse {
     return {
-        specialistId: '',
-        specialistName: ''
+        appointment: getInitialAppointmentInfo(),
+        location: '',
+        doctorId: '',
+        patientId: ''
+    }
+}
+
+export function getInitialRegiserResponse(): IRegisterResponse{
+    return {
+        verifyToken: '',
+        verifyTokenUrl: '',
+        appUser: getInitialUserInfo()
+    }
+}
+
+export function getInitialSpecialityInfo(): ISpeciality {
+    return {
+        id: '',
+        name: '',
+        createdAt: ""
     }
 }
 
 export function getInitialDoctorInfo(): IDoctor {
     return {
         id: '',
-        doctorId: '',
-        email: '',
-        firstName: '',
-        lastName: '',
+        appUser: getInitialUserInfo(),
+        hospital: getInitialHospitalInfo(),
+        workFrom: "",
+        workTo: "",
         reviewRating: 0,
         appointments: [],
         certificates: [],
-        specialists: [],
-        reviews: []
+        specialities: [],
+        reviews: [],
+        timeSlots: []
+    }
+}
+
+export function getInitialTimeSlotInfo(): ITimeSlot{
+    return {
+        id: '',
+        startTime: "",
+        endTime: "",
     }
 }
 
@@ -105,23 +157,16 @@ export function getInitialCertificateInfo(): ICertificate {
         awardedBy: "",
         description: "",
         imageUrl: "",
-        issuedOn: new Date(),
-        status: CertificateCheckStatus.NOT_VERIFIED
+        issuedOn: "",
+        status: CertificateCheckStatus.NOT_VERIFIED,
+        createdAt: ""
     }
 }
 
 export function getInitialPatientInfo(): IPatient {
     return {
         id: '',
-        patientId: '',
-        email: '',
-        firstName: '',
-        lastName: '',
-        address: '',
-        birthDate: new Date(),
-        city: '',
-        phoneNumber: '',
-        zipCode: '',
+        appUser: getInitialUserInfo(),
         appointments: []
     }
 }

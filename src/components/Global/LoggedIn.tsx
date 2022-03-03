@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { LogoutIcon, CalendarIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import { LogoutIcon, CalendarIcon, UserIcon } from '@heroicons/react/outline';
 import { Menu, Transition } from '@headlessui/react'
 import { Link } from "react-router-dom"
 
@@ -9,10 +9,10 @@ function classNames(...classes: string[]) {
 
 function LoggedIn({ user }: any) {
     return (
-        <Menu as="div" className="relative inline-block text-left">
+        <Menu as="div" className="relative inline-block text-left z-50">
             <div>
                 <Menu.Button className="inline-flex justify-center rounded-full border border-gray-300 shadow-sm p-2 bg-white text-sm font-medium text-gray-700 border-transparent focus:bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent">
-                    <ChevronDownIcon />
+                    <UserIcon className="w-4 h-4" />
                 </Menu.Button>
             </div>
             <Transition
@@ -29,7 +29,7 @@ function LoggedIn({ user }: any) {
                         <Menu.Item>
                             {({ active }) => (
                                 <Link
-                                    to={`/${user?.role === "USER" ? "user" : "doctor"}/${user?.id}`}
+                                    to={`/${user?.role === "PATIENT" ? "user" : "doc"}`}
                                     className={classNames(
                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                         'flex p-2 text-sm'
@@ -54,14 +54,14 @@ function LoggedIn({ user }: any) {
                         <Menu.Item>
                             {({ active }) => (
                                 <Link
-                                    to="#"
+                                    to={`/${user?.role === "PATIENT" ? "user" : "doc"}/calendar`}
                                     className={classNames(
                                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                         'flex px-4 py-2 text-sm'
                                     )}
                                 >
                                     <CalendarIcon
-                                        className="mr-3"
+                                        className="mr-3 w-4 h-4"
                                     />
                                     Lịch khám
                                 </Link>
@@ -78,8 +78,8 @@ function LoggedIn({ user }: any) {
                                         'flex px-4 py-2 text-sm'
                                     )}
                                 >
-                                    <LogoutIcon className="mr-3" />
-                                    Sign out
+                                    <LogoutIcon className="mr-3 w-4 h-4" />
+                                    Đăng xuất
                                 </Link>
                             )}
                         </Menu.Item>

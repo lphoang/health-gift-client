@@ -1,46 +1,43 @@
-import { Dialog } from '@headlessui/react'
-import { LockClosedIcon } from '@heroicons/react/solid'
+import { LockClosedIcon } from '@heroicons/react/outline'
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import ApiState from 'components/Global/ApiState';
 import { authRegister, emptyError, selectApiState } from 'features/slices/authSlice';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"
 import { Role } from 'utils/types';
 
 function Register() {
     const apiState = useAppSelector(selectApiState);
+    let isSuccess = false;
     const dispatch = useAppDispatch();
     const [user, setUser] = useState({
         firstName: '',
         lastName: '',
         email: '',
         password: '',
-        appRole: Role[Role.USER]
+        appRole: Role[Role.PATIENT]
     })
-    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = `Health Gift | Đăng ký`
         emptyError(dispatch);
     }, []);
 
-    useEffect(() => {
-        apiState.isSuccess && navigate('/');
-    }, [apiState.isSuccess, navigate])
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        console.log("Trying to register", user);
         dispatch(authRegister(user));
+        if (apiState.isSuccess) isSuccess = true;
     }
 
     return (
         <div className="bg-white px-3 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="sm:flex sm:items-start w-full">
                 <div className="mt-3 text-center sm:mt-0 sm:text-left w-full mx-5">
-                    <Dialog.Title as="h3" className="text-center text-lg leading-6 font-medium text-gray-900">
-                        Tạo tài khoản
-                    </Dialog.Title>
+                    <div>
+                        <h3 className="text-center text-lg leading-6 font-medium text-gray-900">
+                            Tạo tài khoản
+                        </h3>
+                    </div>
                     <form className="mt-8 space-y-6 w-full" onSubmit={handleSubmit}>
                         <input type="hidden" name="remember" defaultValue="true" />
                         <div className="rounded-md shadow-sm">
@@ -131,7 +128,7 @@ function Register() {
                                                 ...user, appRole: e.target.value
                                             })
                                         }>
-                                        <option value={Role[Role.USER]}>Bệnh nhân</option>
+                                        <option value={Role[Role.PATIENT]}>Bệnh nhân</option>
                                         <option value={Role[Role.DOCTOR]}>Bác sĩ</option>
                                     </select>
                                 </div>
@@ -139,6 +136,7 @@ function Register() {
                         </div>
                         <div>
                             <ApiState {...apiState} />
+                            {isSuccess && (<div className="mx-auto"><p className="block text-green-500 text-center font-bold mb-1 md:mb-0 p-5">Đăng ký thành công, bây giờ hãy xác nhận tài khoản của bạn ở email</p></div>)}
                             <button
                                 type="submit"
                                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"

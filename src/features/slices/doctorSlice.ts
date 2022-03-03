@@ -8,6 +8,7 @@ import {
     getInitialApi,
     getInitialDoctorInfo,
     getInitialCertificateInfo,
+    getInitialRegiserResponse,
 } from '../../apis/initialInformation'
 import api from 'apis/commonActions';
 
@@ -17,6 +18,7 @@ const initialState = {
     apiState: getInitialApi(),
     doctors: initialDoctors,
     doctor: getInitialDoctorInfo(),
+    userDoctor: getInitialRegiserResponse(),
     certificates: initialCertificates,
     certificate: getInitialCertificateInfo(),
     createdCertificate: getInitialCertificateInfo()
@@ -35,6 +37,10 @@ const doctorSlice = createSlice({
             state.apiState = getSuccess(state.apiState);
             state.doctor = action.payload;
         },
+        userDone: (state, action: PayloadAction<any>) => {
+            state.apiState = getSuccess(state.apiState);
+            state.userDoctor = action.payload;
+        },
         certificatesDone: (state, action: PayloadAction<any>) => {
             state.apiState = getSuccess(state.apiState);
             state.certificates = action.payload;
@@ -45,12 +51,15 @@ const doctorSlice = createSlice({
         },
         error: (state, action: PayloadAction<string>) => {
             state.apiState = getError(state.apiState, action.payload);
+        },
+        emptyMessage: (state) => {
+            state.apiState = getInitialApi();
         }
     }
 })
 
 export const getAllDoctors = () => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().doctor().getAllDoctors();
         dispatch(actions.doctorsDone(response.data));
@@ -60,7 +69,7 @@ export const getAllDoctors = () => async (dispatch: any) => {
 }
 
 export const getDoctor = (id: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().doctor().getDoctor(id);
         dispatch(actions.doctorDone(response.data));
@@ -70,7 +79,7 @@ export const getDoctor = (id: string) => async (dispatch: any) => {
 }
 
 export const getAllCertificates = (doctorId: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().doctor().getAllDoctorCertificates(doctorId);
         dispatch(actions.certificatesDone(response.data));
@@ -80,7 +89,7 @@ export const getAllCertificates = (doctorId: string) => async (dispatch: any) =>
 }
 
 export const getCertificate = (doctorId: string, cerId: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().doctor().getDoctorCertificate(doctorId, cerId);
         dispatch(actions.certificateDone(response.data));
@@ -90,7 +99,7 @@ export const getCertificate = (doctorId: string, cerId: string) => async (dispat
 }
 
 export const createCertificate = (doctorId: string, token: string, request: ICertificateRequest) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().doctor().createCertificate(doctorId, token, request);
         dispatch(actions.certificateDone(response.data));
@@ -98,6 +107,51 @@ export const createCertificate = (doctorId: string, token: string, request: ICer
         dispatch(actions.error(getErrorMsg(error)));
     }
 }
+
+export const createDoctor = (request: any) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().doctor().createDoctor(request);
+        dispatch(actions.userDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const updateUserInfo = (request: any, token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().doctor().updateUserInfo(request, token, id);
+        dispatch(actions.userDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const updateDoctor = (request: any, token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().doctor().updateDoctor(request, token, id);
+        dispatch(actions.doctorDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const addSpeciality = (specId: string, token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        await api().doctor().addSpeciality(token, id, specId);
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const emptyMessage = () => async (dispatch: any) => {
+    await dispatch(actions.emptyMessage());
+};
+
+
 
 export const actions = doctorSlice.actions;
 

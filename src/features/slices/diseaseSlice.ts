@@ -1,4 +1,4 @@
-import { IApiState } from 'utils/types';
+import { IDisease } from './../../utils/types/common';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
     getError,
@@ -10,7 +10,7 @@ import {
 } from '../../apis/initialInformation'
 import api from 'apis/commonActions';
 
-const initialDiseases: string[] = [];
+const initialDiseases: IDisease[] = [];
 const initialState = {
     apiState: getInitialApi(),
     diseases: initialDiseases,
@@ -37,7 +37,7 @@ const diseaseSlice = createSlice({
 })
 
 export const getAllDiseases = () => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().diseases().getAllDiseases();
         dispatch(actions.diseasesDone(response.data));
@@ -47,7 +47,7 @@ export const getAllDiseases = () => async (dispatch: any) => {
 }
 
 export const getDisease = (id: string) => async (dispatch: any) => {
-    dispatch(actions.loading);
+    dispatch(actions.loading());
     try {
         const response = await api().diseases().getDisease(id);
         dispatch(actions.diseaseDone(response.data));
@@ -56,8 +56,37 @@ export const getDisease = (id: string) => async (dispatch: any) => {
     }
 }
 
+export const createDisease = (request: any, token: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().diseases().create(request, token);
+        dispatch(actions.diseaseDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const updateDisease = (request: any, token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().diseases().update(request, token, id);
+        dispatch(actions.diseaseDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
+export const deleteDisease = (token: string, id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        await api().diseases().delete(token, id);
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+};
+
 export const actions = diseaseSlice.actions;
 
-export const selectApiState = (state: { auth: { apiState: IApiState; }; }) => state.auth.apiState;
+export const selectApiState = (state: any) => state.auth.apiState;
 
 export default diseaseSlice.reducer;

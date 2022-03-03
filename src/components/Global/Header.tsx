@@ -1,35 +1,20 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { Link } from 'react-router-dom'
 import {
     MenuIcon,
     XIcon,
 } from '@heroicons/react/outline'
-import Modal from '../Registration/Modal'
-import { useAppSelector, useAppDispatch } from 'app/hooks'
+import { useAppSelector } from 'app/hooks'
 import { selectIsLogged } from 'features/slices/authSlice'
 import LoggedIn from './LoggedIn'
 
 export default function Header() {
     const isLogged = useAppSelector(selectIsLogged);
     const user = useAppSelector(state => state.auth?.user)
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-
-    }, [])
-
-    const [onShowModal, setOnShowModal] = useState<boolean>(false);
-    const modalProps = {
-        open: onShowModal,
-    }
-    const handleShowModal = () => {
-        setOnShowModal(prevOnShowModal => !prevOnShowModal);
-    }
 
     return (
         <Popover className="relative bg-white">
-            <Modal {...modalProps} />
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className="flex justify-between items-center border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
                     <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -52,23 +37,31 @@ export default function Header() {
                         Bài viết
                     </Link>
                     <Popover.Group as="nav" className="hidden md:flex space-x-10">
-                        <Link to="/calendar" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                            Lịch hẹn
-                        </Link>
                         <Link to="/diseases" className="text-base font-medium text-gray-500 hover:text-gray-900">
                             Sổ tay sức khỏe
+                        </Link>
+                        <Link to="/hospitals" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                            Hệ thống trung tâm
                         </Link>
                         <Link to="/doctors" className="text-base font-medium text-gray-500 hover:text-gray-900">
                             Đội ngũ bác sĩ
                         </Link>
                     </Popover.Group>
                     <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-                        <button
-                            className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                            onClick={handleShowModal}
-                        >
-                            Đăng ký
-                        </button>
+                        {!isLogged ? (
+                            <Link to="/auth">
+                                <button
+                                    className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                                >
+                                    Đăng ký
+                                </button>
+                            </Link>
+                        ) : (
+                            <>
+                                <LoggedIn user={user} />
+                            </>
+                        )
+                        }
                     </div>
                 </div>
             </div>
@@ -103,11 +96,11 @@ export default function Header() {
                         </div>
                         <div className="py-6 px-5 space-y-6">
                             <div className="grid grid-cols-2 gap-y-4 gap-x-8">
-                                <Link to="/calendar" className="text-base font-medium text-gray-500 hover:text-gray-900">
-                                    Lịch hẹn
-                                </Link>
                                 <Link to="/diseases" className="text-base font-medium text-gray-500 hover:text-gray-900">
                                     Sổ tay sức khỏe
+                                </Link>
+                                <Link to="/hospitals" className="text-base font-medium text-gray-500 hover:text-gray-900">
+                                    Hệ thống trung tâm
                                 </Link>
                                 <Link to="/doctors" className="text-base font-medium text-gray-500 hover:text-gray-900">
                                     Đội ngũ bác sĩ
@@ -116,22 +109,23 @@ export default function Header() {
                             <div>
                                 {!isLogged ? (
                                     <>
-                                        <button
-                                            className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
-                                            onClick={handleShowModal}
-                                        >
-                                            Đăng ký
-                                        </button>
-                                        <p className="mt-6 text-center text-base font-medium text-gray-500">
+                                        <Link to="/auth">
+                                            <button
+                                                className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+                                            >
+                                                Đăng ký
+                                            </button>
+                                        </Link>
+                                        <Link to="/auth" className="mt-6 text-center text-base font-medium text-gray-500">
                                             Đã có tài khoản?{' '}
-                                            <button className="text-indigo-600 hover:text-indigo-500" onClick={handleShowModal}>
+                                            <button className="text-indigo-600 hover:text-indigo-500">
                                                 Đăng nhập
                                             </button>
-                                        </p>
+                                        </Link>
                                     </>
                                 ) : (
                                     <>
-                                        <LoggedIn user={user}/>
+                                        <LoggedIn user={user} />
                                     </>
                                 )}
                             </div>
@@ -139,6 +133,6 @@ export default function Header() {
                     </div>
                 </Popover.Panel>
             </Transition>
-        </Popover>
+        </Popover >
     )
 }

@@ -12,6 +12,7 @@ import api from 'apis/commonActions';
 
 const initialState = {
     isLogged: false,
+    isAdmin: false,
     verifiedToken: "",
     accessToken: "",
     apiState: getInitialApi(),
@@ -32,6 +33,9 @@ const authSlice = createSlice({
             state.isLogged = action.payload.userDetails.enabled;
             state.verifiedToken = action.payload.verifiedToken;
             state.accessToken = action.payload.accessToken;
+            if (action.payload.userDetails.role === "ADMIN") {
+                state.isAdmin = true;
+            }
         },
         authError: (state, action: PayloadAction<string>) => {
             state.apiState = getError(state.apiState, action.payload);
@@ -66,10 +70,14 @@ export const authRegister = ({ firstName, lastName, email, password, appRole }: 
         })
 }
 
-export const authLogout = (dispatch: any) => {
+export const authLogout = () => (dispatch: any) => {
     dispatch(actions.authLoading());
-    dispatch(actions.authLogout());
-    localStorage.removeItem("state");
+    try {
+        dispatch(actions.authLogout());
+        localStorage.removeItem("state");
+    } catch (error) {
+        dispatch(actions.authError(getErrorMsg(error)));
+    }
 }
 
 export const emptyError = (dispatch: any) => {
