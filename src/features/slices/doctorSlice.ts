@@ -1,3 +1,4 @@
+import { IReviewResponse } from './../../utils/types/common';
 import { IApiState, IDoctor, ICertificate, ICertificateRequest } from 'utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
@@ -14,6 +15,7 @@ import api from 'apis/commonActions';
 
 const initialDoctors: IDoctor[] = [];
 const initialCertificates: ICertificate[] = [];
+const intialReviews: IReviewResponse[] = []
 const initialState = {
     apiState: getInitialApi(),
     doctors: initialDoctors,
@@ -21,7 +23,8 @@ const initialState = {
     userDoctor: getInitialRegiserResponse(),
     certificates: initialCertificates,
     certificate: getInitialCertificateInfo(),
-    createdCertificate: getInitialCertificateInfo()
+    createdCertificate: getInitialCertificateInfo(),
+    reviews: intialReviews,
 }
 
 const doctorSlice = createSlice({
@@ -49,6 +52,10 @@ const doctorSlice = createSlice({
             state.apiState = getSuccess(state.apiState);
             state.certificate = action.payload;
         },
+        reviewsDone: (state, action: PayloadAction<any>) => {
+            state.apiState = getSuccess(state.apiState);
+            state.reviews = action.payload;
+        },
         error: (state, action: PayloadAction<string>) => {
             state.apiState = getError(state.apiState, action.payload);
         },
@@ -73,6 +80,16 @@ export const getDoctor = (id: string) => async (dispatch: any) => {
     try {
         const response = await api().doctor().getDoctor(id);
         dispatch(actions.doctorDone(response.data));
+    } catch (error) {
+        dispatch(actions.error(getErrorMsg(error)));
+    }
+}
+
+export const getReviews = (id: string) => async (dispatch: any) => {
+    dispatch(actions.loading());
+    try {
+        const response = await api().doctor().getReviews(id);
+        dispatch(actions.reviewsDone(response.data));
     } catch (error) {
         dispatch(actions.error(getErrorMsg(error)));
     }

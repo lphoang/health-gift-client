@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { getDoctor } from 'features/slices/doctorSlice';
+import { getAllCertificates, getDoctor } from 'features/slices/doctorSlice';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CheckupForm from './CheckupForm';
@@ -12,10 +12,12 @@ function Doctor() {
     const patient = useAppSelector((state) => state.auth.user);
     const doctor = useAppSelector((state) => state.doctors?.doctor);
     const role = useAppSelector(state => state.auth?.user?.role);
-    const { id } = useParams();
+    const certificates = useAppSelector(state => state.doctors?.certificates);
+    const { id } = useParams()
 
     useEffect(() => {
         dispatch(getDoctor(id));
+        dispatch(getAllCertificates(id));
         document.title = `Bác sĩ ${doctor.appUser.firstName}`
     }, [])
 
@@ -34,6 +36,8 @@ function Doctor() {
     }
 
     const contextValue = { switchToOverview, switchToCheckup, switchToReview };
+
+    console.log(certificates);
 
 
     return (
@@ -98,7 +102,7 @@ function Doctor() {
                             </ul>
                         </div>
                     </div>
-                    {status === "overview" && <Overview doctor={doctor} />}
+                    {status === "overview" && <Overview doctor={doctor} certificates={certificates} />}
                     {status === "review" && <Review doctor={doctor} patient={patient} />}
                     {status === "checkup" && role !== "DOCTOR" && <CheckupForm doctor={doctor} patient={patient} />}
                 </div>

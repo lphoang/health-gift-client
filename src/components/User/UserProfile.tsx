@@ -29,7 +29,7 @@ function UserProfile() {
                     <div className="bg-white p-3 border-t-4 border-indigo-400">
                         <div className="image overflow-hidden">
                             <img className="h-auto w-full mx-auto"
-                                src={patient.appUser.avatar ? patient.appUser.avatar : "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"}
+                                src={patient.appUser?.avatar ? patient.appUser?.avatar : "https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"}
                                 alt="avatar" />
                         </div>
                         <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{patient.appUser?.firstName}{" "}{patient.appUser?.lastName}</h1>

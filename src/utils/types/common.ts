@@ -137,7 +137,7 @@ export interface ICertificate {
 }
 
 export interface ICertificateRequest {
-    awarded: string,
+    awardedBy: string,
     certificateName: string,
     description: string,
     imageUrl: string,
@@ -152,7 +152,6 @@ export interface ISpeciality {
 
 export interface IReview {
     id: string,
-    patient: IPatient;
     reviewRating: number,
     reviewComment: string,
     createdAt: any
@@ -197,3 +196,9 @@ export interface IAppointmentResponse {
     patientId: string
 }
 
+export interface IReviewResponse {
+    review: IReview,
+    doctorId: string,
+    patientAvatar: string,
+    patientName: string
+}

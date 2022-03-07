@@ -19,14 +19,14 @@ function CreateDoctor() {
     e.preventDefault();
     dispatch(createDoctor(doctor));
     alert("Added successfully");
-    onVerifyHandler();
     setTimeout(() => {
+      onVerifyHandler();
       navigate("/admin/doctors");
     }, 1000)
   };
 
   const onVerifyHandler = () => {
-    window.open(state.doctors?.userDoctor?.verifyTokenUrl)
+    window.open(state.doctors?.userDoctor?.verifyTokenUrl, '_blank')
   }
 
   useEffect(() => {

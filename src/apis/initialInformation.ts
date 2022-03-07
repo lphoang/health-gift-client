@@ -1,4 +1,4 @@
-import { ITimeSlot, IRegisterResponse, IAppointmentResponse } from './../utils/types/common';
+import { ITimeSlot, IRegisterResponse, IAppointmentResponse, IReview, IReviewResponse } from './../utils/types/common';
 import {
     AppointmentStatus,
     AppointmentType,
@@ -61,6 +61,25 @@ export function getInitialDiseaseInfo(): IDisease {
         createdAt: ""
     }
 }
+
+export function getInitialReviewInfo(): IReview {
+    return {
+        id: "",
+        reviewRating: 0,
+        reviewComment: '',
+        createdAt: new Date()
+    }
+}
+
+export function getInitialReviewResponseInfo(): IReviewResponse {
+    return {
+        review: getInitialReviewInfo(),
+        doctorId: "",
+        patientAvatar: "",
+        patientName: ""
+    }
+}
+
 
 export function getInitialBlogInfo(): IBlog {
     return {
@@ -141,6 +160,8 @@ export function getInitialDoctorInfo(): IDoctor {
         timeSlots: []
     }
 }
+
+
 
 export function getInitialTimeSlotInfo(): ITimeSlot{
     return {

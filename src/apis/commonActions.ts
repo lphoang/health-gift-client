@@ -179,11 +179,12 @@ function appointments() {
 function doctor() {
     return {
         getDoctor: (id: string) => instance.get(`/doctor/${id}`),
+        getReviews: (id: string) => instance.get(`/doctor/${id}/reviews`),
         getAllDoctors: () => instance.get(`/doctor`),
-        getAllDoctorCertificates: (id: string) => instance.get(`/doctor/${id}/certifications`),
-        getDoctorCertificate: (doctorId: string, cerId: string) => instance.get(`/doctor/${doctorId}/certifications/${cerId}`),
-        createCertificate: (doctorId: string, token: string, request: ICertificateRequest) => instance.post(`/doctor/${doctorId}/certifications/create`, {
-            awarded: request.awarded,
+        getAllDoctorCertificates: (id: string) => instance.get(`/doctor/${id}/certificates`),
+        getDoctorCertificate: (doctorId: string, cerId: string) => instance.get(`/doctor/${doctorId}/certificates/${cerId}`),
+        createCertificate: (doctorId: string, token: string, request: ICertificateRequest) => instance.post(`/doctor/${doctorId}/certificates/create`, {
+            awardedBy: request.awardedBy,
             certificationName: request.certificateName,
             description: request.description,
             imageUrl: request.imageUrl,

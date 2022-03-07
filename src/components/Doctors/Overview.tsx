@@ -1,8 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { formatDay } from 'utils/helpers';
 
-function Overview({ doctor }: any) {
+function Overview({ doctor, certificates }: any) {
+    console.log(certificates);
     return (
         <div className="w-full md:w-9/12 mx-2 h-64">
             <div className="bg-white p-3 shadow-sm rounded-sm">
@@ -74,19 +74,19 @@ function Overview({ doctor }: any) {
                         </div>
                         <ul className="list-inside space-y-2">
                             <li>
-                                <div className="text-teal-600">Owner at Her Company Inc.</div>
+                                <div className="text-teal-600">Lorem, ipsum dolor.</div>
                                 <div className="text-gray-500 text-xs">March 2020 - Now</div>
                             </li>
                             <li>
-                                <div className="text-teal-600">Owner at Her Company Inc.</div>
+                                <div className="text-teal-600">Lorem, ipsum dolor.</div>
                                 <div className="text-gray-500 text-xs">March 2020 - Now</div>
                             </li>
                             <li>
-                                <div className="text-teal-600">Owner at Her Company Inc.</div>
+                                <div className="text-teal-600">Lorem, ipsum dolor.</div>
                                 <div className="text-gray-500 text-xs">March 2020 - Now</div>
                             </li>
                             <li>
-                                <div className="text-teal-600">Owner at Her Company Inc.</div>
+                                <div className="text-teal-600">Lorem, ipsum dolor.</div>
                                 <div className="text-gray-500 text-xs">March 2020 - Now</div>
                             </li>
                         </ul>
@@ -106,14 +106,14 @@ function Overview({ doctor }: any) {
                             <span className="tracking-wide">Học vấn</span>
                         </div>
                         <ul className="list-inside space-y-2">
-                            <li>
-                                <div className="text-teal-600">Masters Degree in Oxford</div>
-                                <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                            </li>
-                            <li>
-                                <div className="text-teal-600">Bachelors Deindigo in LPU</div>
-                                <div className="text-gray-500 text-xs">March 2020 - Now</div>
-                            </li>
+                            {certificates?.map((certificate: any, index: number) => {
+                                return (
+                                    <li key={index}>
+                                        <div className="text-teal-600">{certificate.name}</div>
+                                        <div className="text-gray-500 text-xs">{certificate.issuedOn ? formatDay(certificate.issuedOn) : formatDay([2012, 10, 10])} - Now</div>
+                                    </li>
+                                )
+                            })}
                         </ul>
                     </div>
                 </div>

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { RegistrationContext } from './RegistrationContext';
 import Login from './Login';
 import Register from './Register';
-import LoginImage from 'assets/images/home.jpg'
 import { useAppSelector } from 'app/hooks';
 import { selectIsLogged } from 'features/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -34,7 +33,7 @@ export default function Registration() {
     return (
         <RegistrationContext.Provider value={contextValue} >
             <div className="flex w-full h-screen items-center align-middle">
-                <img src={LoginImage} className="md:w-1/2 lg:w-2/3 object-cover h-full" alt="loginimage" />
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/hospital-and-medical-assistants-and-ambulance-2681143-2233471.png" className="md:w-1/2 lg:w-2/3 object-cover h-full" alt="loginimage" />
                 <div className="lg:w-2/3 md:w-1/2 h-2/3 m-auto bg-white overflow-hidden transform transition-all sm:my-8 sm:max-w-xl">
                     <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 rounded-lg shadow-xl">
                         <div className="p-10">

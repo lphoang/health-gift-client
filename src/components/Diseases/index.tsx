@@ -46,17 +46,19 @@ function Diseases() {
             >
                 {firstLetterOfDiseases?.map((letter: string, index: number) => {
                     return (
-                        <ul key={index} className="flex flex-col justify-between items-start mt-10 list-disc">
-                            <span className="text-2xl text-indigo-900 font-bold">{letter}</span>
-                            {diseases?.filter((d: any) => d.name[0] === letter)?.map((disease: any, index: number) => {
-                                return (
-                                    <li key={index} className="mt-2 ml-5 text-gray-600 text-md font-semibold hover:text-gray-900">
-                                        <Link to={`/diseases/${disease.id}`} >
-                                            {disease?.name}
-                                        </Link>
-                                    </li>
-                                )
-                            })}
+                        <ul key={index} className="mt-10 list-disc w-full">
+                            <span className="text-2xl text-indigo-900 font-bold w-3/12">{letter}</span>
+                            <div className="grid grid-cols-3 gap-10 w-full">
+                                {diseases?.filter((d: any) => d.name[0] === letter)?.map((disease: any, index: number) => {
+                                    return (
+                                        <li key={index} className="mt-2 ml-5 text-gray-600 text-md font-semibold hover:text-gray-900">
+                                            <Link to={`/diseases/${disease.id}`} >
+                                                {disease?.name}
+                                            </Link>
+                                        </li>
+                                    )
+                                })}
+                            </div>
                         </ul>
                     )
                 })}

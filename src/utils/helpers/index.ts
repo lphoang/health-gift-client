@@ -58,3 +58,7 @@ export const generateEndTime = (appointment: IAppointmentResponse) => {
             appointment.appointment?.timeSlot?.endTime.slice(0, 2), 0)
     } else return new Date()
 }
+
+export const randomDate = (start: Date, end: Date) => {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}

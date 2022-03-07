@@ -1,12 +1,13 @@
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { selectIsLogged } from 'features/slices/authSlice';
-import { getDoctor } from 'features/slices/doctorSlice';
+import { getAllCertificates, getDoctor } from 'features/slices/doctorSlice';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { formatToDate } from 'utils/helpers';
 import { DoctorContext } from '../Doctors/DoctorContext';
 import Overview from '../Doctors/Overview';
 import Review from '../Doctors/Review';
+import CreateCertificate from './CreateCertificate';
 
 function DocProfile() {
     const dispatch = useAppDispatch();
@@ -14,11 +15,13 @@ function DocProfile() {
     const role = useAppSelector(state => state.auth?.user?.role);
     const user = useAppSelector((state) => state.auth.user);
     const doctor = useAppSelector((state) => state.doctors?.doctor);
-    const { id } = useParams();
+    const id = useAppSelector(state => state.auth.user?.id);
+    const certificates = useAppSelector((state) => state.doctors.certificates);
     const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getDoctor(id));
+        dispatch(getAllCertificates(id));
         document.title = `Bác sĩ ${user?.firstName}`;
         (!isLogged || role !== "DOCTOR") && navigate("/")
     }, [])
@@ -33,7 +36,11 @@ function DocProfile() {
         setStatus("review");
     }
 
-    const contextValue = { switchToOverview, switchToReview };
+    const switchToCreateCertificate = () => {
+        setStatus("certificate");
+    }
+
+    const contextValue = { switchToOverview, switchToReview, switchToCreateCertificate };
 
 
     return (
@@ -41,20 +48,26 @@ function DocProfile() {
             <div className="container mx-auto my-5 p-5">
                 <div className="flex justify-end items-center border-b-4 border-indigo-400 p-3">
                     <button
-                        className={"block w-ful text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "overview"
+                        className={"block mx-2 text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "overview"
                             ? "text-white bg-indigo-400"
                             : "text-indigo-600 bg-white")}
                         onClick={switchToOverview}>
                         Thông tin cơ bản</button>
                     <button
-                        className={"block w-ful text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "review"
+                        className={"block mx-2 text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "review"
                             ? "text-white bg-indigo-400"
                             : "text-indigo-600 bg-white")}
                         onClick={switchToReview}>
                         Nhận xét</button>
+                    <button
+                        className={"block mx-2 text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "review"
+                            ? "text-white bg-indigo-400"
+                            : "text-indigo-600 bg-white")}
+                        onClick={switchToCreateCertificate}>
+                        Tạo chứng chỉ</button>
                     <Link to="/doc/update">
                         <button
-                            className={"block w-ful text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "checkup"
+                            className={"block mx-2 text-sm font-semibold rounded-lg hover:bg-indigo-200 focus:outline-none focus:shadow-outline focus:bg-indigo-200 hover:shadow-xs p-3 my-4" + (status === "checkup"
                                 ? "text-white bg-indigo-400"
                                 : "text-indigo-600 bg-white")}>
                             Cập nhật thông tin</button>
@@ -97,8 +110,9 @@ function DocProfile() {
                             </ul>
                         </div>
                     </div>
-                    {status === "overview" && <Overview doctor={doctor} />}
+                    {status === "overview" && <Overview doctor={doctor} certificates={certificates}/>}
                     {status === "review" && <Review doctor={doctor} />}
+                    {status === "certificate" && <CreateCertificate doctor={doctor} />}
                 </div>
             </div>
         </DoctorContext.Provider>

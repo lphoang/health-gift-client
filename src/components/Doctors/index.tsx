@@ -25,10 +25,10 @@ function Doctors() {
             <div className="mt-4 mb-6">
                 <hr />
             </div>
-            <div>
+            <div className="grid grid-cols-2 gap-4 px-10">
                 {doctors?.map((doctor, index) => {
                     return (
-                        <div className="focus:outline-none lg:w-1/2 lg:mr-4 lg:mb-0 mb-7 bg-white p-6 shadow rounded mt-4" key={index}>
+                        <div className="focus:outline-none w-full lg:mr-4 lg:mb-0 mb-7 bg-white p-6 shadow rounded mt-4" key={index}>
                             <div className="flex items-center border-b border-gray-200 pb-6">
                                 <img src={doctor?.appUser.avatar} alt="avatar" className="w-12 h-12 rounded-full" />
                                 <div className="flex items-start justify-between w-full">
@@ -56,7 +56,7 @@ function Doctors() {
                                         </div>
                                     </div>
                                     <div className="focus:outline-none flex">
-                                        <Link to={`/doctors/${doctor?.appUser.id}`} className="py-2 px-4 text-xs leading-3 block text-center text-white rounded-full bg-indigo-700">Xem thêm</Link>
+                                        <Link to={`/doctors/${doctor?.id}`} className="py-2 px-4 text-xs leading-3 block text-center text-white rounded-full bg-indigo-700">Xem thêm</Link>
                                     </div>
                                 </div>
                             </div>
