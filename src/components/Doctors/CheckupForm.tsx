@@ -5,13 +5,20 @@ import { useParams } from 'react-router-dom';
 import { AppointmentType } from 'utils/types';
 import { create, emptyError } from "features/slices/appointmentSlice";
 import ApiState from 'components/Global/ApiState';
+// import { PUBLISHER_URL } from 'utils/helpers/env';
+// import { createMeeting, getUserInfo } from 'features/slices/zoomSlice';
+// import { getStartTimeById } from 'utils/helpers';
+import { getAllTimeslots } from 'features/slices/timeslotSlice';
 
 function CheckupForm({ doctor, patient }: any) {
     const dispatch = useAppDispatch();
     const isLogged = useAppSelector(selectIsLogged);
     const token = useAppSelector((state) => state.auth.accessToken)
     const apiState = useAppSelector(state => state.appointments.apiState);
-    let isSuccess = false;
+    // const accessToken = useAppSelector(state => state.zoom.oauthToken.accessToken)
+    // const zoomId = useAppSelector(state => state.zoom.user.id)
+    // const timeSlots = useAppSelector(state => state.timeslots.timeslots)
+    // const [isZoomLogged, setIsZoomLogged] = useState(false);
     const { id } = useParams();
 
     const [appointment, setAppointment] = useState({
@@ -20,6 +27,7 @@ function CheckupForm({ doctor, patient }: any) {
         appointmentType: AppointmentType[AppointmentType.OFFLINE],
         appointmentDate: "",
         timeSlotId: doctor?.timeSlots ? doctor?.timeSlots[0].id : "",
+        timeSlot: "",
         patientId: patient.id,
         doctorId: id
     });
@@ -27,10 +35,17 @@ function CheckupForm({ doctor, patient }: any) {
     const onSubmitHandler = (e: any) => {
         e.preventDefault();
         if (isLogged) {
-            dispatch(create(appointment, token));
-            if (!apiState.errorMessage) {
-                isSuccess = true;
-            }
+            // if (appointment.appointmentType === AppointmentType[AppointmentType.ONLINE] && isZoomLogged) {
+            //     alert("Bạn phải đăng nhập Zoom để sử dụng chức năng này!");
+            // } else {
+                dispatch(create(appointment, token));
+            //     createMeeting({
+            //         duration: 60,
+            //         password: '',
+            //         startTime: getStartTimeById(timeSlots, appointment.timeSlotId),
+            //         topic: appointment.title
+            //     }, accessToken, zoomId)
+            // }
         } else {
             alert("Bạn vẫn chưa đăng nhập!");
         }
@@ -38,6 +53,13 @@ function CheckupForm({ doctor, patient }: any) {
 
     useEffect(() => {
         emptyError(dispatch);
+        // if (accessToken) {
+        //     setIsZoomLogged(true);
+        //     dispatch(getUserInfo(accessToken));
+        // }
+
+        dispatch(getAllTimeslots());
+
         document.title = "Đăng ký khám"
     }, [])
 
@@ -172,7 +194,7 @@ function CheckupForm({ doctor, patient }: any) {
                             </div>
                         </div>
                         {<ApiState {...apiState} />}
-                        {isSuccess && (<div className="mx-auto"><p className="block text-green-500 font-bold text-center mb-1 md:mb-0 pr-4">Bạn đã đặt khám thành công</p></div>)}
+                        {apiState.isSuccess && (<div className="mx-auto"><p className="block text-green-500 font-bold text-center mb-1 md:mb-0 pr-4">Bạn đã đặt khám thành công</p></div>)}
                         <div>
                             <button
                                 type="submit"

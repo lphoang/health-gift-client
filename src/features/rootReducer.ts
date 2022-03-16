@@ -10,6 +10,7 @@ import certificateReducer from 'features/slices/certificateSlice'
 import bucketReducer from './slices/bucketSlice'
 import timeslotReducer from './slices/timeslotSlice'
 import userReducer from './slices/userSlice'
+import zoomReducer from './slices/zoomSlice'
 import { combineReducers } from '@reduxjs/toolkit'
 
 export const rootReducer = combineReducers({
@@ -24,5 +25,6 @@ export const rootReducer = combineReducers({
     timeslots: timeslotReducer,
     certificates: certificateReducer,
     buckets: bucketReducer,
-    user: userReducer
+    user: userReducer,
+    zoom: zoomReducer
 })

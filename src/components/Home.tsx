@@ -1,8 +1,25 @@
-import React from 'react';
+// import { useAppDispatch, useAppSelector } from 'app/hooks';
+// import { getToken, setOAuthCode } from 'features/slices/zoomSlice';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BlogCard from './Blog/BlogCard';
 
 function Home() {
+    // const dispatch = useAppDispatch();
+    // const queryParams = new URLSearchParams(window.location.search);
+    // const oAuthCode = useAppSelector(state => state.zoom.oauthCode);
+    // const queryCode = queryParams.get('code');
+    // console.log(queryCode);
+
+    // useEffect(() => {
+    //     if (queryCode) {
+    //         dispatch(setOAuthCode(queryCode));
+    //     }
+    //     if(oAuthCode) {
+    //         dispatch(getToken(oAuthCode));
+    //     }
+    // }, [queryCode, dispatch, oAuthCode])
+
     return (
         <div>
             <section>

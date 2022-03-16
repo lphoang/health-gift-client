@@ -37,8 +37,6 @@ function Doctor() {
 
     const contextValue = { switchToOverview, switchToCheckup, switchToReview };
 
-    console.log(certificates);
-
 
     return (
         <DoctorContext.Provider value={contextValue}>

@@ -1,4 +1,4 @@
-import { ITimeSlot, IRegisterResponse, IAppointmentResponse, IReview, IReviewResponse } from './../utils/types/common';
+import { ITimeSlot, IRegisterResponse, IAppointmentResponse, IReview, IReviewResponse, IOAuthToken, IZoomUser, IMeetingResponse } from './../utils/types/common';
 import {
     AppointmentStatus,
     AppointmentType,
@@ -125,7 +125,8 @@ export function getInitialAppointmentResponseInfo() : IAppointmentResponse {
         appointment: getInitialAppointmentInfo(),
         location: '',
         doctorId: '',
-        patientId: ''
+        patientId: '',
+        meetingResponse: getInitialMeetingResponse()
     }
 }
 
@@ -189,6 +190,47 @@ export function getInitialPatientInfo(): IPatient {
         id: '',
         appUser: getInitialUserInfo(),
         appointments: []
+    }
+}
+
+export function getInitialOAuthToken(): IOAuthToken {
+    return {
+        accessToken: '',
+        refreshToken: '',
+        tokenType: '',
+        expires_in: 3600,
+        scope: ''
+    }
+}
+
+export function getInitialZoomUser(): IZoomUser {
+    return {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        roleName: '',
+        roleId: ''
+    }
+}
+
+export function getInitialMeetingResponse(): IMeetingResponse {
+    return {
+        uuid: "",
+        id: 0,
+        host_id: "",
+        host_email: "",
+        topic: "",
+        type: 0,
+        status: "",
+        startTime: "",
+        duration: 60,
+        timezone: "",
+        createdAt: "",
+        startUrl: "",
+        joinUrl: "",
+        password: "",
+        preSchedule: false 
     }
 }
 

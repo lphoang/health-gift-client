@@ -193,7 +193,8 @@ export interface IAppointmentResponse {
     appointment: IAppointment,
     location: string,
     doctorId: string,
-    patientId: string
+    patientId: string,
+    meetingResponse: IMeetingResponse
 }
 
 export interface IReviewResponse {
@@ -201,4 +202,45 @@ export interface IReviewResponse {
     doctorId: string,
     patientAvatar: string,
     patientName: string
+}
+
+export interface IOAuthToken {
+    accessToken: string,
+    refreshToken: string,
+    tokenType: string,
+    expires_in: number,
+    scope: string
+}
+
+export interface IZoomUser {
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    roleName: string,
+    roleId: string
+}
+
+export interface IMeetingRequest {
+    duration: number,
+    password: string,
+    startTime: any,
+    topic: string,
+}
+export interface IMeetingResponse {
+    uuid: string,
+    id: number,
+    host_id: string,
+    host_email: string,
+    topic: string,
+    type: number,
+    status: string,
+    startTime: string,
+    duration: number,
+    timezone: string,
+    createdAt: string,
+    startUrl: string,
+    joinUrl: string,
+    password: string,
+    preSchedule: boolean
 }

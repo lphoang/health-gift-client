@@ -1,4 +1,3 @@
-import { emptyMessage } from './doctorSlice';
 import { IApiState } from 'utils/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
@@ -16,7 +15,7 @@ const initialState = {
     user: getInitialUserInfo()
 }
 
-const doctorSlice = createSlice({
+const userSlice = createSlice({
     name: 'user',
     initialState: initialState,
     reducers: {
@@ -58,8 +57,8 @@ export const emptyMsg = () => async (dispatch: any) => {
     await dispatch(actions.emptyMessage());
 };
 
-export const actions = doctorSlice.actions;
+export const actions = userSlice.actions;
 
 export const selectApiState = (state: { auth: { apiState: IApiState; }; }) => state.auth.apiState;
 
-export default doctorSlice.reducer;
+export default userSlice.reducer;

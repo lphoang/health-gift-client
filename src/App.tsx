@@ -52,6 +52,7 @@ function App() {
             <Route path="/auth" element={<Registration />} />
             <Route path="/" element={<Client />} >
               <Route path="" element={<Home />} />
+              <Route path=":code" element={<Home />} />
               <Route path="user" element={<UserProfile />} />
               <Route path="user/calendar" element={<UserCalendar />} />
               <Route path="user/update" element={<UpdateProfile />} />

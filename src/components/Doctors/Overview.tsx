@@ -2,7 +2,6 @@ import React from 'react';
 import { formatDay } from 'utils/helpers';
 
 function Overview({ doctor, certificates }: any) {
-    console.log(certificates);
     return (
         <div className="w-full md:w-9/12 mx-2 h-64">
             <div className="bg-white p-3 shadow-sm rounded-sm">

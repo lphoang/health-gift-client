@@ -1,4 +1,4 @@
-import { IAppointmentResponse } from './../types/common';
+import { IAppointmentResponse, ITimeSlot } from './../types/common';
 export const formatDate = (dateArr: any) => {
     if (dateArr && dateArr.length >= 6) {
         let year = dateArr[0];
@@ -61,4 +61,8 @@ export const generateEndTime = (appointment: IAppointmentResponse) => {
 
 export const randomDate = (start: Date, end: Date) => {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+export const getStartTimeById = (timeslots: ITimeSlot[], id: string) => {
+    return timeslots.filter(timeslot => (timeslot.id === id)).map(timeslot => timeslot.startTime);
 }

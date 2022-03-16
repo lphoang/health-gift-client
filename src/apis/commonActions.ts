@@ -1,14 +1,51 @@
+import { API_BASE_URL, ZOOM_BASE_URL, ZOOM_OAUTH_URL, DEPLOYMENT_URL, AUTHORIZATION_BASIC_TOKEN } from './../utils/helpers/env';
 import axios from 'axios';
-import { LoginRequest, RegisterRequest, IAppointmentRequest, ICertificateRequest } from '../utils/types';
+import { LoginRequest, RegisterRequest, IAppointmentRequest, ICertificateRequest, IMeetingRequest } from '../utils/types';
 
 export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
+    baseURL: API_BASE_URL,
     withCredentials: true,
     responseType: 'json',
     headers: {
         'Content-Type': 'application/json'
     }
 })
+
+export const oauthInstance = axios.create({
+    baseURL: ZOOM_OAUTH_URL,
+    withCredentials: true,
+    responseType: 'json'
+})
+
+export const zoomInstance = axios.create({
+    baseURL: ZOOM_BASE_URL,
+    withCredentials: true,
+    responseType: 'json',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+
+function zoom() {
+    return {
+        getUserInfo: (token: string) => zoomInstance.get('/users/me', {
+            headers: { Authorization: `Bearer ${token}` },
+        }),
+        createMeeting: (request: IMeetingRequest, token: string, userId: string) => zoomInstance.post(`/users/${userId}/meetings`, {
+            duration: request.duration,
+            password: request.password,
+            startTime: request.startTime,
+            topic: request.topic,
+            timeZone: "Asia/Saigon"
+        }, {
+            headers: { Authorization: `Bearer ${token}` },
+        }),
+        oauth: (code: string) => oauthInstance.post(`/token?code=${code}&grant_type=authorization_code&redirect_uri=${DEPLOYMENT_URL}`, {
+            'Authorization': `Basic ${AUTHORIZATION_BASIC_TOKEN}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        })
+    }
+}
 
 function auth() {
     return {
@@ -355,7 +392,8 @@ export default function api() {
         hospitals,
         bucket,
         certificates,
-        timeslots
+        timeslots,
+        zoom
     }
 }
 
