@@ -24,6 +24,9 @@ function DocUpdateProfile() {
     const isLogged = useAppSelector(state => state.auth?.isLogged);
     const role = useAppSelector(state => state.auth.user?.role);
     let isSuccess = false;
+
+    const [trigger, setTrigger] = useState(false);
+
     const [doctor, setDoctor] = useState({
         hospitalName: calledDoctor?.hospital?.hospitalName,
         workFrom: calledDoctor.workFrom,
@@ -71,11 +74,19 @@ function DocUpdateProfile() {
     const onSelectSpeciality = (e: any) => {
         e.preventDefault();
         dispatch(addSpeciality(specialityId, token, id))
+        setTrigger(true);
+        setTimeout(() => {
+            setTrigger(false);
+        }, 1000)
     }
 
     const onSelectTimeslot = (e: any) => {
         e.preventDefault();
         dispatch(addTimeSlot(timeslotId, id, token))
+        setTrigger(true);
+        setTimeout(() => {
+            setTrigger(false);
+        }, 1000)
     }
 
     useEffect(() => {
@@ -84,7 +95,7 @@ function DocUpdateProfile() {
         dispatch(getAllHospitals());
         dispatch(emptyMessage());
         (!isLogged && role !== "DOCTOR") && navigate("/")
-    }, [id]);
+    }, [id, trigger]);
 
     useEffect(() => {
         if (state.buckets.uploadFileUrl !== "") {

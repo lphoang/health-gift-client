@@ -22,6 +22,8 @@ function EditDoctor() {
   const specialities = calledDoctor?.specialities;
   const timeslots = calledDoctor?.timeSlots;
 
+  const [trigger, setTrigger] = useState(false);
+
   const [doctor, setDoctor] = useState({
     hospitalName: calledDoctor?.hospital?.hospitalName,
     workFrom: calledDoctor.workFrom,
@@ -66,18 +68,26 @@ function EditDoctor() {
   const onSelectSpeciality = (e: any) => {
     e.preventDefault();
     dispatch(addSpeciality(specialityId, token, id))
+    setTrigger(true);
+    setTimeout(() => {
+      setTrigger(false);
+    }, 1000)
   }
 
   const onSelectTimeslot = (e: any) => {
     e.preventDefault();
     dispatch(addTimeSlot(timeslotId, id, token))
+    setTrigger(true);
+    setTimeout(() => {
+      setTrigger(false);
+    }, 1000)
   }
 
   useEffect(() => {
     dispatch(getDoctor(id));
     dispatch(getAllSpecialities());
     dispatch(getAllHospitals());
-  }, [id]);
+  }, [dispatch, id, trigger]);
 
   useEffect(() => {
     if (state.buckets.uploadFileUrl !== "") {
@@ -87,7 +97,7 @@ function EditDoctor() {
       });
     }
     dispatch(setEmptyBucket());
-  }, [state.buckets.uploadFileUrl, specialities, timeslots]);
+  }, [state.buckets.uploadFileUrl]);
 
   const isDisabled = (spec: any) => {
     let isDis = false;
