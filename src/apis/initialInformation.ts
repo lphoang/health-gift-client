@@ -175,7 +175,7 @@ export function getInitialTimeSlotInfo(): ITimeSlot{
 export function getInitialCertificateInfo(): ICertificate {
     return {
         id: "",
-        certificateName: "",
+        name: "",
         awardedBy: "",
         description: "",
         imageUrl: "",

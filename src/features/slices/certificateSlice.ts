@@ -43,10 +43,10 @@ const certificateSlice = createSlice({
     },
 });
 
-export const getAllCertificates = () => async (dispatch: any) => {
+export const getAllCertificates = (token: string) => async (dispatch: any) => {
     dispatch(actions.loading());
     try {
-        const response = await api().certificates().getAll();
+        const response = await api().certificates().getAll(token);
         dispatch(actions.certificatesDone(response.data));
     } catch (error) {
         dispatch(actions.error(getErrorMsg(error)));

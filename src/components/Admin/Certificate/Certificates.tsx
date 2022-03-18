@@ -6,9 +6,10 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 function Certificates() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state);
+  const token = useAppSelector(state => state.auth?.accessToken);
 
   useEffect(() => {
-    dispatch(getAllCertificates());
+    dispatch(getAllCertificates(token));
   }, []);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ function Certificates() {
                       <td className="px-6 py-4 whitespace-wrap">
                         <div className="flex items-center">
                           <div className="text-sm font-medium text-gray-900">
-                            {certificate.certificateName}
+                            {certificate.name}
                           </div>
                         </div>
                       </td>

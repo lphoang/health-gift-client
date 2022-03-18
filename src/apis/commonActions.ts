@@ -56,8 +56,10 @@ function auth() {
 
 function certificates() {
     return {
-        getAll: () =>
-            instance.get(`/admin/certificates`),
+        getAll: (token: string) =>
+            instance.get(`/admin/certificates`, {
+                headers: { Authorization: `Bearer ${token}` },
+            }),
         get: (token: string, id: string) =>
             instance.get(`/admin/certificates/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },

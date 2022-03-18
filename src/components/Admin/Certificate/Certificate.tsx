@@ -1,32 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getCertificate,
   verifyCertificate,
 } from "features/slices/certificateSlice";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { formatDay } from "utils/helpers";
+import { CertificateCheckStatus } from "utils/types";
 
 function Certificate() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state);
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  const token = state.auth?.accessToken;
+  const certificate = useAppSelector(state => state.certificates?.certificate);
+  const token = useAppSelector(state => state.auth?.accessToken);
+  const [isVerify] = useState(certificate.status === CertificateCheckStatus[CertificateCheckStatus.VERIFIED])
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (e: any) => {
+    e.preventDefault();
     dispatch(verifyCertificate(token, id));
     alert("Verify succesfully");
-    setTimeout(() => {
-      navigate("/admin/certificates")
-    },1000)
   };
 
   useEffect(() => {
     dispatch(getCertificate(token, id));
   }, []);
-  const certificate = state.certificates.certificate;
+
+  const color = isVerify ? 'green' : 'red';
 
   return (
     <div>
@@ -52,7 +52,7 @@ function Certificate() {
                 className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 type="text"
                 name="certifcateName"
-                value={certificate.certificateName}
+                value={certificate.name}
                 disabled
               />
             </div>
@@ -123,20 +123,21 @@ function Certificate() {
               </label>
             </div>
             <div className="md:w-2/3">
-              <input
-                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                name="status"
-                value={certificate.status}
+              <button
+                className={`mx-auto relative w-28 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-${color}-600 hover:bg-${color}-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${color}-500`}
                 disabled
-              />
+              >
+                {certificate.status}
+              </button>
             </div>
           </div>
           <div>
             <button
               type="submit"
               className="mx-auto relative w-48 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={isVerify}
             >
-              Verify
+              {isVerify ? "Verified" : "Verify"}
             </button>
           </div>
         </div>

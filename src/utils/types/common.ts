@@ -127,12 +127,12 @@ export interface IHospital {
 
 export interface ICertificate {
     id: string,
-    certificateName: string,
+    name: string,
     awardedBy: string,
     description: string,
     imageUrl: string,
     issuedOn: any,
-    status: CertificateCheckStatus,
+    status: any,
     createdAt: any
 }
 
