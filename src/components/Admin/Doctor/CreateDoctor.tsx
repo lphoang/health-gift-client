@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { createDoctor } from "features/slices/doctorSlice";
 import Loading from "components/Global/Loading";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 
 function CreateDoctor() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state);
+  const prevVerifyUrl = useAppSelector((state) => state.doctors?.userDoctor?.verifyTokenUrl);
+
   const [doctor, setDoctor] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: ""
   });
-  const navigate = useNavigate();
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
@@ -21,17 +21,18 @@ function CreateDoctor() {
     alert("Added successfully");
     setTimeout(() => {
       onVerifyHandler();
-      navigate("/admin/doctors");
-    }, 1000)
+    }, 2000)
   };
 
   const onVerifyHandler = () => {
-    window.open(state.doctors?.userDoctor?.verifyTokenUrl, '_blank')
+    if (state.doctors.userDoctor?.verifyTokenUrl !== prevVerifyUrl) {
+      window.open(state.doctors?.userDoctor?.verifyTokenUrl, "Verify Your Account", "height=400,width=400")
+    }
   }
 
   useEffect(() => {
     document.title = "Create new doctor";
-  });
+  }, [prevVerifyUrl]);
 
   return (
     <div>

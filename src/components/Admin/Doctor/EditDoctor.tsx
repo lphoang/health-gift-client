@@ -18,6 +18,10 @@ function EditDoctor() {
   const dispatch = useAppDispatch();
   const state = useAppSelector((state) => state);
   const calledDoctor = useAppSelector((state) => state.doctors?.doctor);
+
+  const specialities = calledDoctor?.specialities;
+  const timeslots = calledDoctor?.timeSlots;
+
   const [doctor, setDoctor] = useState({
     hospitalName: calledDoctor?.hospital?.hospitalName,
     workFrom: calledDoctor.workFrom,
@@ -83,7 +87,7 @@ function EditDoctor() {
       });
     }
     dispatch(setEmptyBucket());
-  }, [state.buckets.uploadFileUrl]);
+  }, [state.buckets.uploadFileUrl, specialities, timeslots]);
 
   const isDisabled = (spec: any) => {
     let isDis = false;
@@ -360,7 +364,7 @@ function EditDoctor() {
             </div>
           </div>
           <div className="focus:outline-none flex my-4">
-            {calledDoctor?.specialities?.map((speciality, index) => {
+            {specialities?.map((speciality, index) => {
               return (
                 <div className="py-2 px-4 text-xs leading-3 text-indigo-700 rounded-full inline-block text-center bg-indigo-100" key={index}>{speciality.name}</div>
               )
@@ -406,7 +410,7 @@ function EditDoctor() {
             </div>
           </div>
           <div className="focus:outline-none flex my-4">
-            {calledDoctor?.timeSlots?.map((timeSlot, index) => {
+            {timeslots?.map((timeSlot, index) => {
               return (
                 <div className="py-2 px-4 text-xs leading-3 text-indigo-700 rounded-full inline-block text-center bg-indigo-100" key={index}>{timeSlot.startTime} - {timeSlot.endTime}</div>
               )

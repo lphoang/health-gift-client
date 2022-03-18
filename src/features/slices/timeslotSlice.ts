@@ -22,6 +22,7 @@ const timeslotSlice = createSlice({
     initialState: initialState,
     reducers: {
         loading: (state) => { state.apiState = getLoading() },
+        loadingDone: (state) => { state.apiState.isLoading = false },
         timeslotsDone: (state, action: PayloadAction<any>) => {
             state.apiState = getSuccess(state.apiState);
             state.timeslots = action.payload;
@@ -69,8 +70,8 @@ export const createTimeslot = (start: any, end: any, token: string) => async (di
 export const addTimeSlot = (timeslotId: string, doctorId: string, token: string) => async (dispatch: any) => {
     dispatch(actions.loading());
     try {
-        const response = await api().timeslots().addTimeSlot(timeslotId, doctorId, token);
-        dispatch(actions.timeslotDone(response.data));
+        await api().timeslots().addTimeSlot(timeslotId, doctorId, token);
+        dispatch(actions.loadingDone());
     } catch (error) {
         dispatch(actions.error(getErrorMsg(error)));
     }

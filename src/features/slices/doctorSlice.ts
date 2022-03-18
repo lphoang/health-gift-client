@@ -32,6 +32,7 @@ const doctorSlice = createSlice({
     initialState: initialState,
     reducers: {
         loading: (state) => { state.apiState = getLoading() },
+        loadingDone: (state) => { state.apiState.isLoading = false },
         doctorsDone: (state, action: PayloadAction<any>) => {
             state.apiState = getSuccess(state.apiState);
             state.doctors = action.payload;
@@ -159,6 +160,7 @@ export const addSpeciality = (specId: string, token: string, id: string) => asyn
     dispatch(actions.loading());
     try {
         await api().doctor().addSpeciality(token, id, specId);
+        dispatch(actions.loadingDone());
     } catch (error) {
         dispatch(actions.error(getErrorMsg(error)));
     }
